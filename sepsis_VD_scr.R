@@ -12,7 +12,7 @@ read_excel("dataprev_sepsis.xlsx", sheet= "sepsis_prevall")
 data_sepsis <- read_excel("dataprev_sepsis.xlsx", sheet= "sepsis_prevall")
 View(data_sepsis)
 
-# checks 
+# Check data
 table(data_sepsis$design)
 # case_control= 7, cohort= 9 
 table(data_sepsis$setting)
@@ -24,7 +24,7 @@ table(data_sepsis$country_group)
 # group2 = South Africa, China, Egypt, Iran, Turkey, Saudi Arabia
 # group3 = Bangladesh, Thailand, India
 
-# Prevalence of VD deficiency in all children with sepsis 
+# Prevalence of Vitamib D deficiency in all children with sepsis 
 meta_sepsis <- metaprop(vddseps, totseps, studlab=(study), data=data_sepsis, sm="PLOGIT")
 print(meta_sepsis)
 
@@ -37,7 +37,7 @@ funnel.meta(meta_sepsis, pch=1, xlim = NULL,
             col.random = "deepskyblue",
             main = "Funnel Plot with pseudo 95% Confidence Intervals",
             cex.main = 1,   font.main = 3, col.main= "darkblue")
-?forest.meta
+
 ?metabias
 # Eggers Test
 metabias(meta_sepsis, method.bias = "linreg", 
@@ -78,7 +78,7 @@ forest.meta(meta_country, studlab = TRUE, comb.fixed=FALSE,
             col.diamond="darkslategray3", fontsize= 11)
 
 
-# Subgroup with all the studies (sepsis) by study design (cohort vs case-control)
+# Subgroup analysis with all the studies (of children with sepsis) by study design (cohort vs case-control)
 meta_design <- metaprop(vddseps, totseps, studlab=(study), data=data_sepsis, byvar=design, bylab = "", 
                         print.byvar=FALSE, print.subgroup.labels=TRUE,
                         sm="PLOGIT", comb.fixed= FALSE)
@@ -131,7 +131,7 @@ read_excel("dataprev_sepsis.xlsx", sheet= "sample_size")
 data_samplesiz <- read_excel("dataprev_sepsis.xlsx", sheet= "sample_size")
 View(data_samplesiz)
 
-# Small sample size 
+# Small sample size (< 40 children)
 meta_small <- metaprop(vddseps, totseps, studlab=(study), 
                        subset=(data_samplesiz$sample_size=="small"), 
                        data=data_samplesiz, sm="PLOGIT")
@@ -150,7 +150,7 @@ metabias(meta_small, method.bias = "linreg",
          plotit = TRUE, correct = FALSE,
          k.min=2)
 
-# Larger sample size (>40)
+# Larger sample size (> 40 children)
 meta_large <- metaprop(vddseps, totseps, studlab=(study), 
                        subset=(data_samplesiz$sample_size=="large"), 
                        data=data_samplesiz, sm="PLOGIT")
@@ -174,7 +174,7 @@ metabias(meta_large, method.bias = "linreg",
 read_excel("dataprev_sepsis.xlsx", sheet= "ind_turkey")
 data_indturk <- read_excel("dataprev_sepsis.xlsx", sheet= "ind_turkey")
 View(data_indturk)
-
+# (both on the forest plot)
 meta_indturk <- metaprop(vddseps, totseps, studlab=(study), data=data_indturk, 
                          byvar=country, bylab = "", 
                          print.byvar=FALSE, print.subgroup.labels=TRUE,
