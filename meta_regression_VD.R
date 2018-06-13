@@ -9,13 +9,14 @@ library(rmeta)
 library(xlsx)
 library(reshape2)
 
+# load dataset
 
 data_pr <- read.csv("data_pr_metareg.csv", as.is = TRUE)
 data_pr
 View(data_pr)
 
 #--- dummy code for: design (cohort, other), country groups (group 1, group 2 and group 3) and setting (PICU, NICU)
-# convert these variables from character to factor
+#--- convert these variables from character to factor
 
 #------------------------------- for study_group ----------------------------------------#
 
@@ -23,6 +24,7 @@ data_pr$design_group <- as.factor(data_pr$design_group)
 levels(data_pr$design_group)
 # "cohort" "other" 
 
+# structure:
 # contr. treatment(number of groups, base = number representing the baseline group)
 
 # set cohort design as baseline i.e = 0
@@ -35,7 +37,9 @@ attr(data_pr$design_group,"contrasts")
 # cohort 0
 # other  1
 
-# give them a more meaningful name (cohort = coded as 0)
+#  Label
+# (cohort = coded as 0)
+# label: 
 cohort_vs_other <- c(0,1)
 # bind the newly created dummy variables together
 contrasts(data_pr$design_group) <- cbind(cohort_vs_other)
@@ -72,7 +76,7 @@ data_pr$setting <- as.factor(data_pr$setting)
 levels(data_pr$setting)
 # "NICU" "PICU"
 
-# contr. treatment(number of groups, base = number representing the baseline group)
+
 # set NICU as baseline i.e = 0
 contrasts(data_pr$setting)<-contr.treatment(2, base = 1)
 data_pr$setting
